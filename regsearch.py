@@ -27,7 +27,7 @@ if len(sys.argv) == 3:
 			searchRegEx = re.compile(r''+search_parameter)
 			for file in file_lists:
 				file_record = open(file,"r")
-				result = SearchRegEx.search(file_record.read())
+				result = searchRegEx.search(file_record.read())
 				if result != None:
 					print(result.group())
 					print("found in %s" %file)
