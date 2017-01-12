@@ -1,0 +1,92 @@
+n3
+# mcb.pyw - Saves and loads pieces of text to the clipboard.
+u # Usage: py.exe mcb.pyw save <keyword> - Saves clipboard to keyword.
+# py.exe mcb.pyw <keyword> - Loads keyword to clipboard.
+# py.exe mcb.pyw list - Loads all keywords to clipboard.
+v import shelve, pyperclip, sys
+w mcbShelf = shelve.open('mcb')
+# TODO: Save clipboard content.
+# TODO: List keywords and load content.
+mcbShelf.close()
+It’s common practice to put general usage information in comments
+at the top of the fie u. If you ever forget how to run your script, you can
+always look at these comments for a reminder. Then you import your modules v. Copying and pasting will require the pyperclip module, and reading
+the command line arguments will require the sys module. The shelve module will also come in handy: Whenever the user wants to save a new piece
+of clipboard text, you’ll save it to a shelf fie. Then, when the user wants to
+paste the text back to their clipboard, you’ll open the shelf fie and load it
+back into your program. The shelf fie will be named with the prefi mcb w.
+Step 2: Save Clipboard Content with a Keyword
+The program does different things depending on whether the user wants
+to save text to a keyword, load text into the clipboard, or list all the existing keywords. Let’s deal with that fist case. Make your code look like the
+following:
+#! python3
+# mcb.pyw - Saves and loads pieces of text to the clipboard.
+--snip--
+# Save clipboard content.
+u if len(sys.argv) == 3 and sys.argv[1].lower() == 'save':
+v mcbShelf[sys.argv[2]] = pyperclip.paste()
+elif len(sys.argv) == 2:
+w # TODO: List keywords and load content.
+mcbShelf.close()
+Reading and Writing Files  193
+If the fist command line argument (which will always be at index 1
+of the sys.argv list) is 'save' u, the second command line argument is the
+keyword for the current content of the clipboard. The keyword will be used
+as the key for mcbShelf, and the value will be the text currently on the clipboard v.
+If there is only one command line argument, you will assume it is either
+'list'  or a keyword to load content onto the clipboard. You will implement
+that code later. For now, just put a TODO comment there w.
+Step 3: List Keywords and Load a Keyword’s Content
+Finally, let’s implement the two remaining cases: The user wants to load
+clipboard text in from a keyword, or they want a list of all available keywords. Make your code look like the following:
+#! python3
+# mcb.pyw - Saves and loads pieces of text to the clipboard.
+--snip--
+# Save clipboard content.
+if len(sys.argv) == 3 and sys.argv[1].lower() == 'save':
+ mcbShelf[sys.argv[2]] = pyperclip.paste()
+elif len(sys.argv) == 2:
+ # List keywords and load content.
+u if sys.argv[1].lower() == 'list':
+v pyperclip.copy(str(list(mcbShelf.keys())))
+ elif sys.argv[1] in mcbShelf:
+w pyperclip.copy(mcbShelf[sys.argv[1]])
+mcbShelf.close()
+If there is only one command line argument, fist let’s check whether
+it’s 'list' u. If so, a string representation of the list of shelf keys will be copied to the clipboard v. The user can paste this list into an open text editor
+to read it.
+Otherwise, you can assume the command line argument is a keyword.
+If this keyword exists in the mcbShelf shelf as a key, you can load the value
+onto the clipboard w.
+And that’s it! Launching this program has different steps depending on
+what operating system your computer uses. See Appendix B for details for
+your operating system.
+Recall the password locker program you created in Chapter 6 that
+stored the passwords in a dictionary. Updating the passwords required
+changing the source code of the program. This isn’t ideal because average
+users don’t feel comfortable changing source code to update their software.
+Also, every time you modify the source code to a program, you run the risk
+of accidentally introducing new bugs. By storing the data for a program
+in a different place than the code, you can make your programs easier for
+others to use and more resistant to bugs.
+194 Chapter 8
+Summary
+Files are organized into folders (also called directories), and a path describes
+the location of a fie. Every program running on your computer has a current working directory, which allows you to specify fie paths relative to the
+current location instead of always typing the full (or absolute) path. The
+os.path module has many functions for manipulating fie paths.
+Your programs can also directly interact with the contents of text fies.
+The open() function can open these fies to read in their contents as one large
+string (with the read() method) or as a list of strings (with the readlines()
+method). The open() function can open fies in write or append mode to
+create new text fies or add to existing text fies, respectively.
+In previous chapters, you used the clipboard as a way of getting large
+amounts of text into a program, rather than typing it all in. Now you can
+have your programs read fies directly from the hard drive, which is a big
+improvement, since fies are much less volatile than the clipboard.
+In the next chapter, you will learn how to handle the fies themselves,
+by copying them, deleting them, renaming them, moving them, and more.
+Practice Questions
+1. What is a relative path relative to?
+2. What does an absolute path start with?
+3. What do the os.getcwd() and os.chdir() functi
